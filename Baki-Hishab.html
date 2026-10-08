@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>বাকি হিসাব</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--mut:#6b7280;--g:#15803d;--r:#c2410c;--p:#2563eb;--bd:#e5e7eb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1218;--card:#1a1f2a;--tx:#eef0f4;--mut:#9aa3b2;--g:#4ade80;--r:#fb923c;--p:#60a5fa;--bd:#2a3140}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif;max-width:520px;margin:auto;padding:14px}
+h1{font-size:20px;margin:0}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:10px}
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.sum .card{margin:0;text-align:center}
+.sum small{color:var(--mut);display:block;font-size:12px}
+.sum b{font-size:20px}
+.net{grid-column:1/3}
+.g{color:var(--g)}.r{color:var(--r)}
+.row{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.row small{color:var(--mut)}
+button{font:inherit;border:0;border-radius:10px;padding:10px 14px;background:var(--p);color:#fff;cursor:pointer}
+button.o{background:transparent;color:var(--p);border:1px solid var(--bd)}
+button.gg{background:var(--g);color:#000}button.rr{background:var(--r);color:#000}
+input{font:inherit;width:100%;padding:11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);margin-bottom:8px}
+.btns{display:flex;gap:8px}.btns button{flex:1}
+.tx{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bd)}
+.tx:last-child{border:0}
+.tx small{color:var(--mut);display:block}
+.x{background:none;color:var(--mut);padding:0 6px}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));border-radius:50%;width:54px;height:54px;font-size:28px;padding:0}
+.sync{font-size:12px;color:var(--mut)}
+.empty{text-align:center;color:var(--mut);padding:30px 0}
+</style>
+</head>
+<body>
+<div class="top"><h1>📒 বাকি হিসাব</h1><div id="auth"></div></div>
+<div id="app"></div>
+<script>
+/* ===== Firebase সেটিং: নিজের কনফিগ এখানে বসান (না বসালে শুধু ফোনে সেভ হবে) ===== */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCpfXVKiQaglQlNJRhWTJanwqWxfc1fJRY",
+  authDomain: "baki-hishab-47f6a.firebaseapp.com",
+  projectId: "baki-hishab-47f6a",
+  storageBucket: "baki-hishab-47f6a.firebasestorage.app",
+  messagingSenderId: "124329501501",
+  appId: "1:124329501501:web:c8668ed18a3eebf82c5b54"
+};
+/* উদাহরণ: {apiKey:"...",authDomain:"...",projectId:"...",appId:"..."} */
+
+let D={people:[]}, ed=false, cf=null, cur=null, fm=null, user=null, db=null;
+const $=s=>document.querySelector(s);
+const fmt=n=>"৳"+Math.abs(n).toLocaleString("bn-BD");
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const bal=p=>p.tx.reduce((s,t)=>s+(t.type==="gave"?t.amt:-t.amt),0);
+
+function loadLocal(){try{const v=localStorage.getItem("baki");if(v)D=JSON.parse(v)}catch(e){}}
+function save(){
+  try{localStorage.setItem("baki",JSON.stringify(D))}catch(e){}
+  if(user&&db){db.collection("users").doc(user.uid).set(D).catch(()=>{})}
+  render();
+}
+
+function render(){
+  const a=$("#app");
+  if(cur){const p=D.people.find(x=>x.id===cur); if(!p){cur=null;return render()} return detail(a,p)}
+  let get=0,give=0;
+  D.people.forEach(p=>{const b=bal(p);b>0?get+=b:give-=b});
+  const net=get-give;
+  let h=`<div class="sum"><div class="card"><small>মোট পাব</small><b class="g">${fmt(get)}</b></div>
+  <div class="card"><small>মোট দেব</small><b class="r">${fmt(give)}</b></div>
+  <div class="card net"><small>নিট ব্যালেন্স</small><b class="${net>=0?'g':'r'}">${net<0?'−':''}${fmt(net)}</b></div></div>`;
+  if(!D.people.length)h+=`<div class="empty">কেউ নেই। নিচের + চাপুন।</div>`;
+  D.people.forEach(p=>{const b=bal(p);
+    h+=`<div class="card row" onclick="cur='${p.id}';ed=false;render()"><div><b>${esc(p.name)}</b><br><small>${p.phone?esc(p.phone)+' • ':''}${p.tx.length}টি লেনদেন</small></div>
+    <div style="text-align:right"><b class="${b>=0?'g':'r'}">${fmt(b)}</b><br><small>${b>0?'পাব':b<0?'দেব':'মিটে গেছে'}</small></div></div>`});
+  if(fm==="person")h+=`<div class="card"><input id="nm" placeholder="নাম" autofocus><input id="ph" type="tel" inputmode="tel" placeholder="মোবাইল নাম্বার (ঐচ্ছিক)"><div class="btns"><button class="o" onclick="fm=null;render()">বাতিল</button><button onclick="addPerson()">যোগ করুন</button></div></div>`;
+  h+=`<button class="fab" onclick="fm='person';render();setTimeout(()=>$('#nm')&&$('#nm').focus(),50)">+</button>`;
+  a.innerHTML=h;
+}
+
+function detail(a,p){
+  const b=bal(p);
+  let h=`<div class="top"><button class="o" onclick="cur=null;fm=null;cf=null;ed=false;render()">← ফিরুন</button><div>${ed?`<button class="o" style="${cf==='p'+p.id?'background:#dc2626;color:#fff;border-color:#dc2626':''}" onclick="delPerson('${p.id}')">${cf==='p'+p.id?'হ্যাঁ, মুছুন':'মুছুন'}</button> `:''}<button class="o" style="opacity:.6" onclick="ed=!ed;cf=null;render()">${ed?'✓ শেষ':'⋯'}</button></div></div>
+  <div class="card" style="text-align:center"><b style="font-size:18px">${esc(p.name)}</b><br>${p.phone?`<a href="tel:${esc(p.phone.replace(/[^0-9+]/g,''))}" style="color:var(--p);text-decoration:none">📞 ${esc(p.phone)}</a> `:''}<a href="#" onclick="fm='phone';render();return false" style="color:var(--mut);font-size:13px">${p.phone?'✎ বদলান':'+ নাম্বার যোগ করুন'}</a><br>
+  <b style="font-size:26px" class="${b>=0?'g':'r'}">${fmt(b)}</b><br><small style="color:var(--mut)">${b>0?'সে আপনাকে দেবে':b<0?'আপনি তাকে দেবেন':'কোনো বাকি নেই'}</small></div>
+  <div class="btns" style="margin-bottom:10px"><button class="rr" onclick="fm='gave';render()">দিলাম</button><button class="gg" onclick="fm='got';render()">পেলাম</button></div>`;
+  if(fm==="phone")h+=`<div class="card"><input id="ph2" type="tel" inputmode="tel" placeholder="মোবাইল নাম্বার" value="${esc(p.phone||'')}"><div class="btns"><button class="o" onclick="fm=null;render()">বাতিল</button><button onclick="savePhone('${p.id}')">সেভ</button></div></div>`;
+  if(fm==="gave"||fm==="got")h+=`<div class="card"><b>${fm==="gave"?"কাকে দিলাম":"কাছ থেকে পেলাম"}</b><br><br>
+  <input id="am" type="number" inputmode="decimal" placeholder="টাকার পরিমাণ"><input id="nt" placeholder="নোট (ঐচ্ছিক)">
+  <div class="btns"><button class="o" onclick="fm=null;render()">বাতিল</button><button onclick="addTx('${p.id}')">সেভ</button></div></div>`;
+  h+=`<div class="card">`;
+  if(!p.tx.length)h+=`<div class="empty">কোনো লেনদেন নেই</div>`;
+  [...p.tx].reverse().forEach(t=>{h+=`<div class="tx"><div>${t.type==="gave"?"দিলাম":"পেলাম"}<small>${t.date}${t.note?" • "+esc(t.note):""}</small></div>
+  <div><b class="${t.type==="gave"?'g':'r'}">${t.type==="gave"?"+":"−"}${fmt(t.amt)}</b>${ed?`<button class="x" style="${cf==='t'+t.id?'color:#dc2626;font-weight:bold':''}" onclick="delTx('${p.id}','${t.id}')">${cf==='t'+t.id?'মুছুন?':'✕'}</button>`:''}</div></div>`});
+  a.innerHTML=h+`</div>`;
+}
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function addPerson(){const n=$("#nm").value.trim();if(!n)return;D.people.push({id:uid(),name:n,phone:$("#ph").value.trim(),tx:[]});fm=null;save()}
+function addTx(id){const amt=parseFloat($("#am").value);if(!(amt>0))return;
+  const p=D.people.find(x=>x.id===id);
+  p.tx.push({id:uid(),type:fm,amt,note:$("#nt").value.trim(),date:new Date().toLocaleDateString("bn-BD")});fm=null;save()}
+function savePhone(id){D.people.find(x=>x.id===id).phone=$('#ph2').value.trim();fm=null;save()}
+function delTx(pid,tid){if(cf!=='t'+tid){cf='t'+tid;render();return}cf=null;const p=D.people.find(x=>x.id===pid);p.tx=p.tx.filter(t=>t.id!==tid);save()}
+function delPerson(id){if(cf!=='p'+id){cf='p'+id;render();return}cf=null;D.people=D.people.filter(x=>x.id!==id);cur=null;save()}
+
+/* ===== Google লগইন + ক্লাউড সিঙ্ক ===== */
+function loadScript(src){return new Promise((ok,no)=>{const s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
+async function initFirebase(){
+  const au=$("#auth");
+  if(!FIREBASE_CONFIG){au.innerHTML='<span class="sync">📱 শুধু এই ফোনে সেভ হচ্ছে</span>';return}
+  try{
+    const v="10.12.2",b="https://cdn.jsdelivr.net/npm/firebase@"+v+"/";
+    await loadScript(b+"firebase-app-compat.js");
+    await Promise.all([loadScript(b+"firebase-auth-compat.js"),loadScript(b+"firebase-firestore-compat.js")]);
+    firebase.initializeApp(FIREBASE_CONFIG);
+    db=firebase.firestore();db.enablePersistence().catch(()=>{});
+    firebase.auth().onAuthStateChanged(u=>{
+      user=u;
+      if(u){
+        au.innerHTML=`<span class="sync">☁️ ${esc(u.email)}</span> <button class="o" onclick="firebase.auth().signOut()">লগআউট</button>`;
+        db.collection("users").doc(u.uid).onSnapshot(s=>{
+          if(s.exists){D=s.data();if(!D.people)D.people=[]}
+          else if(D.people.length){db.collection("users").doc(u.uid).set(D)}
+          try{localStorage.setItem("baki",JSON.stringify(D))}catch(e){}
+          render();
+        });
+      }else{
+        au.innerHTML='<button onclick="login()">Google দিয়ে লগইন</button>';
+      }
+    });
+  }catch(e){au.innerHTML='<span class="sync">⚠️ ক্লাউড সংযোগ হয়নি</span>'}
+}
+function login(){firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>alert("লগইন ব্যর্থ: "+e.message))}
+
+loadLocal();render();initFirebase();
+</script>
+</body>
+</html>
