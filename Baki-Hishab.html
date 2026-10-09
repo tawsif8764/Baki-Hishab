@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8b1f1f"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><title>বাকি হিসাব</title>
+<style>
+:root{--bg:#fff8f7;--cd:#fff;--tx:#1f2937;--mu:#6b7280;--bd:#eadedc;--pr:#8b1f1f;--rb:#fde2e1;--rt:#c0262b;--gb:#dcf7e3;--gt:#15803d;--in:#fff}
+:root[data-theme=dark]{--bg:#140f0f;--cd:#211a1a;--tx:#f3eceb;--mu:#a89c9b;--bd:#382c2c;--pr:#c24141;--rb:#3b1a1b;--rt:#ff8a85;--gb:#12301d;--gt:#5ee08a;--in:#2a2121}
+*{box-sizing:border-box}
+body{margin:0 auto;background:var(--bg);color:var(--tx);font-family:"Noto Sans Bengali",system-ui,sans-serif;max-width:560px;min-height:100vh;padding-bottom:100px}
+button{font:inherit;cursor:pointer}
+.hd{background:#8b1f1f;color:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 14px;display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:12px;background:#fff;color:#8b1f1f;display:grid;place-items:center;font-size:26px;font-weight:700;flex:none}
+.hd h1{font-size:19px;margin:0}.hd small{opacity:.85;font-size:12px}
+.pill{margin-left:auto;background:rgba(255,255,255,.18);border-radius:20px;padding:6px 12px;font-size:12px;white-space:nowrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.w{padding:0 14px}
+.sm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.sm div{border-radius:16px;padding:14px}.sm small{font-size:12px;display:block}.sm b{font-size:24px;display:block;margin-top:6px}
+.r{background:var(--rb);color:var(--rt)}.g{background:var(--gb);color:var(--gt)}
+.cr{color:var(--rt)}.cg{color:var(--gt)}
+.st{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:10px;text-align:center;gap:4px}
+.st small{display:block;font-size:11px;color:var(--mu)}.st b{font-size:15px}
+.tb{display:flex;border-bottom:1px solid var(--bd);margin:14px -14px 0;background:var(--cd)}
+.tb button{flex:1;background:none;border:0;border-bottom:3px solid transparent;color:var(--mu);padding:10px 2px;font-size:12px}
+.tb .on{color:var(--pr);border-color:var(--pr);background:var(--rb)}.ic{display:block;font-size:20px}
+input{font:inherit;width:100%;padding:12px;border:1px solid var(--bd);border-radius:12px;background:var(--in);color:var(--tx);margin:8px 0}
+.ch{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px}
+.ch button{white-space:nowrap;background:var(--cd);border:1px solid var(--bd);color:var(--tx);border-radius:20px;padding:8px 16px;font-size:14px}
+.ch .on{background:var(--pr);color:#fff;border-color:var(--pr)}
+.bt{border:0;border-radius:12px;padding:12px 16px;background:var(--pr);color:#fff;font-size:15px}
+.bo{background:transparent;color:var(--pr);border:1px solid var(--bd)}
+.rw{display:flex;gap:8px}.rw>*{flex:1}.tp{display:flex;justify-content:space-between;margin:14px 0}.tp .rw>*{flex:none}
+.pc{display:flex;align-items:center;gap:12px;background:var(--cd);border:1px solid var(--bd);border-radius:18px;padding:14px;margin-top:12px;cursor:pointer}
+.av{width:52px;height:52px;border-radius:50%;background:var(--rb);color:var(--pr);display:grid;place-items:center;font-size:22px;font-weight:700;flex:none}
+.pc .i{flex:1;min-width:0}.pc .i b{font-size:17px;display:block}.pc small{color:var(--mu)}.pc .a{text-align:right}.pc .a b{font-size:18px;display:block}
+.cd{background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-top:12px}
+.tx{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}.tx:last-child{border:0}
+.tx small{display:block;color:var(--mu)}.x{background:none;border:0;color:var(--mu);padding:0 6px;font-size:16px}
+.big{font-size:30px;font-weight:700;margin-top:8px}.lk{color:var(--pr);text-decoration:none;font-size:14px}
+.em{text-align:center;color:var(--mu);padding:30px 0}.bar{height:8px;border-radius:4px;margin-top:6px}
+.sw{display:flex;justify-content:space-between;align-items:center}
+.tg{width:50px;height:28px;border-radius:14px;border:0;background:var(--bd);position:relative;padding:0}
+.tg:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+.tg.on{background:var(--pr)}.tg.on:after{left:25px}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--pr);color:#fff;border:0;border-radius:30px;padding:16px 22px;font-size:16px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;z-index:9}
+.ov img{max-width:100%;max-height:70vh;border-radius:10px}
+.logo{overflow:hidden}.av{overflow:hidden}.logo img,.av img{width:100%;height:100%;object-fit:cover}</style></head><body><div id="app"></div>
+<script>
+const FIREBASE_CONFIG={
+  apiKey:"AIzaSyCpfXVKiQaglQlNJRhWTJanwqWxfc1fJRY",
+  authDomain:"baki-hishab-47f6a.firebaseapp.com",
+  projectId:"baki-hishab-47f6a",
+  storageBucket:"baki-hishab-47f6a.firebasestorage.app",
+  messagingSenderId:"124329501501",
+  appId:"1:124329501501:web:c8668ed18a3eebf82c5b54"};
+const L={bn:{app:'বাকি হিসাব',edit:'✎ এডিট',pedit:'✎ প্রোফাইল এডিট',noname:'নাম দেওয়া হয়নি',prof:'প্রোফাইল',pname:'অ্যাকাউন্টের নাম',cph:'ছবি বদলান',rno:'রিসিপ্ট নং',dt:'তারিখ',amtL:'টাকা',sub:'ডিজিটাল লেনদেন খতিয়ান',saved:'সংরক্ষিত',local:'শুধু ফোনে',err:'অফলাইন',tr:'মোট বাকি',tp:'মোট জমা',tg:'আজ বাকি',tgt:'আজ জমা',net:'নিট ব্যালেন্স',t1:'ব্যক্তি তালিকা',t2:'লেনদেন',t3:'রিপোর্ট',t4:'সেটিংস',sr:'নাম বা ফোন দিয়ে খুঁজুন...',all:'সকল',owe:'বাকি',adv:'জমা',clr:'পরিশোধিত',clr2:'মিটে গেছে',newp:'+ নতুন ব্যক্তি',nm:'নাম',ph:'মোবাইল নাম্বার (ঐচ্ছিক)',add:'যোগ করুন',cn:'বাতিল',back:'← ফিরুন',gave:'বাকি',got:'জমা',am:'টাকার পরিমাণ',nt:'নোট (ঐচ্ছিক)',sv:'সেভ',rcp:'রিসিপ্ট',dl:'ছবি সেভ করুন',sh:'শেয়ার',cl:'বন্ধ',del:'মুছুন',ydel:'হ্যাঁ, মুছুন',end:'✓ শেষ',addph:'+ নাম্বার যোগ করুন',chg:'✎ বদলান',empty:'কেউ নেই। নিচের বাটনে নতুন ব্যক্তি যোগ করুন।',notx:'কোনো লেনদেন নেই',bnl:'☁️ হিসাব ক্লাউডে সেভ করতে সেটিংসে গিয়ে লগইন করুন',lang:'ভাষা',dark:'ডার্ক মোড',acc:'অ্যাকাউন্ট',login:'Google দিয়ে লগইন',logout:'লগআউট',sure:'নিশ্চিত? আবার চাপুন',nocl:'ক্লাউড সংযোগ নেই, হিসাব শুধু এই ফোনে সেভ হচ্ছে।',cnt:'মোট ব্যক্তি',tgv:'মোট বাকি',tgr:'মোট জমা',topo:'কার কাছে বেশি পাব',topp:'কাকে বেশি দেব',rct:'লেনদেন রিসিপ্ট',thx:'ধন্যবাদ',d1:'সে আপনাকে দেবে',d2:'আপনি তাকে দেবেন',r1:'আপনার কাছে বাকি',r2:'আপনার জমা (আমি দেব)'},
+en:{app:'Baki Hisab',edit:'✎ Edit',pedit:'✎ Edit profile',noname:'No name set',prof:'Profile',pname:'Account name',cph:'Change photo',rno:'Receipt No',dt:'Date',amtL:'Amount',sub:'Digital ledger',saved:'Saved',local:'Phone only',err:'Offline',tr:'Total due',tp:'Total deposit',tg:'Due today',tgt:'Deposit today',net:'Net balance',t1:'People',t2:'Ledger',t3:'Report',t4:'Settings',sr:'Search name or phone...',all:'All',owe:'Due',adv:'Deposit',clr:'Settled',clr2:'Settled',newp:'+ New person',nm:'Name',ph:'Mobile number (optional)',add:'Add',cn:'Cancel',back:'← Back',gave:'Due',got:'Deposit',am:'Amount',nt:'Note (optional)',sv:'Save',rcp:'Receipt',dl:'Save image',sh:'Share',cl:'Close',del:'Delete',ydel:'Yes, delete',end:'✓ Done',addph:'+ Add number',chg:'✎ Change',empty:'No one yet. Tap the button below to add a person.',notx:'No transactions',bnl:'☁️ Log in from Settings to back up your data',lang:'Language',dark:'Dark mode',acc:'Account',login:'Sign in with Google',logout:'Log out',sure:'Sure? Tap again',nocl:'No cloud connection. Data is saved on this phone only.',cnt:'Total people',tgv:'Total due',tgr:'Total deposited',topo:'Who owes you most',topp:'Who you owe most',rct:'Transaction receipt',thx:'Thank you',d1:'They owe you',d2:'You owe them',r1:'Amount due from you',r2:'Your credit (I owe you)'}};
+let D={people:[],profile:{}},LG='bn',TH='',tab='c',cur=null,fm=null,ed=false,cf=null,q='',fl='all',rc=null,tp,pf=null,sy='local',user=null,db=null,unsub=null;
+try{LG=localStorage.getItem('bk_lg')||'bn';TH=localStorage.getItem('bk_th')||''}catch(e){}
+const $=s=>document.querySelector(s),t=k=>L[LG][k]||k,uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),
+bal=p=>p.tx.reduce((s,x)=>s+(x.type=='gave'?x.amt:-x.amt),0),
+fmt=n=>'৳'+Math.abs(n).toLocaleString(LG=='bn'?'bn-BD':'en-US'),
+td=()=>new Date().toLocaleDateString('sv-SE'),
+isT=x=>x.d?x.d==td():x.date==new Date().toLocaleDateString('bn-BD'),
+fd=x=>x.d?new Date(x.d+'T00:00:00').toLocaleDateString(LG=='bn'?'bn-BD':'en-GB',{day:'numeric',month:'short',year:'numeric'}):x.date,
+tcount=n=>LG=='bn'?n.toLocaleString('bn-BD')+'টি লেনদেন':n+' transactions';
+function dark(){const d=TH?TH=='dark':matchMedia('(prefers-color-scheme:dark)').matches;document.documentElement.dataset.theme=d?'dark':'light';return d}
+const fix=()=>{if(!D.people)D.people=[];if(!D.profile)D.profile={}},
+avc=p=>p.photo?`<img src="${p.photo}">`:esc([...p.name][0]);
+function pick(cb){const i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=()=>{const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const m=Math.min(im.width,im.height),c=document.createElement('canvas');c.width=c.height=200;c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,200,200);cb(c.toDataURL('image/jpeg',.8))};im.src=r.result};r.readAsDataURL(f)};i.click()}
+function prof(){
+  const P=D.profile,em=tp!==undefined?tp:P.photo,big='width:110px;height:110px;font-size:44px;margin:0 auto 12px';
+  const back=`<div class="tp"><button class="bt bo" onclick="pf=null;tp=undefined;render()">${t('back')}</button></div>`;
+  if(pf=='edit')return back+`<div class="cd" style="text-align:center"><div class="av" id="pv" style="${big}">${em?`<img src="${em}">`:'৳'}</div><button class="bt bo" onclick="pick(d=>{tp=d;$('#pv').innerHTML='<img src='+d+'>'})">📷 ${t('cph')}</button>${em?` <button class="x" onclick="tp='';$('#pv').innerHTML='৳'">✕</button>`:''}<input id="pn" placeholder="${t('pname')}" value="${esc(P.name||'')}"><div class="rw"><button class="bt bo" onclick="pf='view';tp=undefined;render()">${t('cn')}</button><button class="bt" onclick="saveProf()">${t('sv')}</button></div></div>`;
+  return back+`<div class="cd" style="text-align:center"><div class="av" style="${big}">${P.photo?`<img src="${P.photo}">`:'৳'}</div><b style="font-size:20px">${esc(P.name||t('noname'))}</b>${user?`<br><small style="color:var(--mu)">☁️ ${esc(user.email)}</small>`:''}<br><button class="bt" style="margin-top:14px" onclick="pf='edit';tp=undefined;render()">${t('pedit')}</button></div>`;
+}
+function saveProf(){D.profile.name=$('#pn').value.trim();if(tp!==undefined)D.profile.photo=tp;tp=undefined;pf='view';save()}
+function loadLocal(){try{const v=localStorage.getItem('baki');if(v)D=JSON.parse(v)}catch(e){}fix()}
+function save(){try{localStorage.setItem('baki',JSON.stringify(D))}catch(e){}if(user&&db)db.collection('users').doc(user.uid).set(D).catch(()=>{sy='err';render()});render()}
+function render(){
+  dark();document.documentElement.lang=LG;document.title=t('app');
+  const pl={local:['#fbbf24',t('local')],cloud:['#4ade80',t('saved')],err:['#f87171',t('err')]}[sy];
+  $('#app').innerHTML=`<div class="hd"><div class="logo" style="cursor:pointer" onclick="pf='view';render()">${D.profile.photo?`<img src="${D.profile.photo}">`:'৳'}</div><div><h1>${esc(D.profile.name||t('app'))}</h1><small>${t('sub')}</small></div><div class="pill"><span class="dot" style="background:${pl[0]}"></span>${pl[1]}</div></div><div class="w">${pf?prof():cur?detail():main()}</div>${rc?`<div class="ov"><img src="${rc.url}"><div class="rw"><button class="bt" onclick="dlRc()">${t('dl')}</button><button class="bt" onclick="shRc()">${t('sh')}</button><button class="bt" style="background:#fff;color:#111" onclick="rc=null;render()">${t('cl')}</button></div></div>`:''}`;
+  list();
+}
+function main(){
+  let a=0,b2=0,gv=0,gr=0;
+  D.people.forEach(p=>{const b=bal(p);b>0?a+=b:b2-=b;p.tx.forEach(x=>{if(isT(x))x.type=='gave'?gv+=x.amt:gr+=x.amt})});
+  const n=a-b2;
+  const tabs=[['c','👥','t1'],['l','📝','t2'],['r','📊','t3'],['s','⚙️','t4']].map(([k,i,l])=>`<button class="${tab==k?'on':''}" onclick="goTab('${k}')"><span class="ic">${i}</span>${t(l)}</button>`).join('');
+  return `<div class="sm"><div class="r"><small>${t('tr')}</small><b>${fmt(a)}</b></div><div class="g"><small>${t('tp')}</small><b>${fmt(b2)}</b></div></div>
+  <div class="st"><div><small>${t('tg')}</small><b class="cr">${fmt(gv)}</b></div><div><small>${t('tgt')}</small><b class="cg">${fmt(gr)}</b></div><div><small>${t('net')}</small><b>${n<0?'−':''}${fmt(n)}</b></div></div>
+  <div class="tb">${tabs}</div>${({c:tabC,l:tabL,r:tabR,s:tabS})[tab]()}${tab=='c'?`<button class="fab" onclick="fm='person';render();setTimeout(()=>$('#nm')&&$('#nm').focus(),50)">${t('newp')}</button>`:''}`;
+}
+function goTab(k){tab=k;cf=null;render()}
+function tabC(){
+  let h='';
+  if(FIREBASE_CONFIG&&!user)h+=`<div class="cd" onclick="goTab('s')">${t('bnl')}</div>`;
+  if(fm=='person')h+=`<div class="cd"><input id="nm" placeholder="${t('nm')}"><input id="ph" type="tel" inputmode="tel" placeholder="${t('ph')}"><div class="rw"><button class="bt bo" onclick="fm=null;render()">${t('cn')}</button><button class="bt" onclick="addPerson()">${t('add')}</button></div></div>`;
+  return h+`<input id="sq" value="${esc(q)}" oninput="q=this.value;list()" placeholder="${t('sr')}"><div class="ch">${['all','owe','adv','clr'].map(k=>`<button class="${fl==k?'on':''}" onclick="fl='${k}';render()">${t(k)}</button>`).join('')}</div><div id="pl"></div>`;
+}
+function list(){
+  const el=$('#pl');if(!el)return;const s=q.trim().toLowerCase();
+  const a=D.people.filter(p=>{const b=bal(p);return(fl=='all'||(fl=='owe'&&b>0)||(fl=='adv'&&b<0)||(fl=='clr'&&b==0))&&(!s||p.name.toLowerCase().includes(s)||(p.phone||'').includes(s))});
+  el.innerHTML=a.length?a.map(p=>{const b=bal(p);return `<div class="pc" onclick="openP('${p.id}')"><div class="av">${avc(p)}</div><div class="i"><b>${esc(p.name)}</b><small>${p.phone?'📱 '+esc(p.phone)+' • ':''}${tcount(p.tx.length)}</small></div><div class="a"><b class="${b>0?'cr':b<0?'cg':''}">${fmt(b)}</b><small>${b>0?t('owe'):b<0?t('adv'):t('clr2')}</small></div></div>`}).join(''):`<div class="em">${t('empty')}</div>`;
+}
+const txr=(x,nm,pid)=>`<div class="tx"><div>${nm?esc(nm)+' • ':''}${t(x.type)}<small>${fd(x)}${x.note?' • '+esc(x.note):''}</small></div><div><b class="${x.type=='gave'?'cr':'cg'}">${x.type=='gave'?'+':'−'}${fmt(x.amt)}</b>${pid?`<button class="x" style="${cf=='t'+x.id?'color:#dc2626;font-weight:700':''}" onclick="delT('${pid}','${x.id}')">${cf=='t'+x.id?t('del')+'?':'✕'}</button>`:''}</div></div>`;
+function tabL(){
+  const r=[];D.people.forEach(p=>p.tx.forEach(x=>r.push([p,x])));
+  r.sort((a,b)=>parseInt(b[1].id.slice(0,8),36)-parseInt(a[1].id.slice(0,8),36));
+  return r.length?`<div class="cd">${r.map(([p,x])=>txr(x,p.name)).join('')}</div>`:`<div class="em">${t('notx')}</div>`;
+}
+function tabR(){
+  let gv=0,gr=0;const o=[],pp=[];
+  D.people.forEach(p=>{p.tx.forEach(x=>x.type=='gave'?gv+=x.amt:gr+=x.amt);const b=bal(p);if(b>0)o.push([p,b]);else if(b<0)pp.push([p,-b])});
+  const bars=(a,c)=>{a.sort((x,y)=>y[1]-x[1]);a=a.slice(0,5);const m=a.length?a[0][1]:1;return a.map(([p,v])=>`<div style="margin-top:12px"><div class="tx" style="border:0;padding:0"><span>${esc(p.name)}</span><b>${fmt(v)}</b></div><div class="bar" style="width:${Math.max(6,v/m*100)}%;background:var(${c})"></div></div>`).join('')||`<div class="em">—</div>`};
+  return `<div class="cd"><div class="tx"><span>${t('cnt')}</span><b>${D.people.length.toLocaleString(LG=='bn'?'bn-BD':'en-US')}</b></div><div class="tx"><span>${t('tgv')}</span><b class="cr">${fmt(gv)}</b></div><div class="tx"><span>${t('tgr')}</span><b class="cg">${fmt(gr)}</b></div></div><div class="cd"><b>${t('topo')}</b>${bars(o,'--rt')}</div><div class="cd"><b>${t('topp')}</b>${bars(pp,'--gt')}</div>`;
+}
+function tabS(){
+  const dk=document.documentElement.dataset.theme=='dark';let a;
+  if(!FIREBASE_CONFIG)a=`<small>${t('nocl')}</small>`;
+  else if(user)a=`<div class="tx" style="border:0"><span>☁️ ${esc(user.email)}</span></div><button class="bt ${cf=='out'?'':'bo'}" style="width:100%" onclick="doOut()">${cf=='out'?t('sure'):t('logout')}</button>`;
+  else a=`<button class="bt" style="width:100%" onclick="login()">${t('login')}</button>`;
+  return `<div class="cd"><b>${t('lang')}</b><div class="ch"><button class="${LG=='bn'?'on':''}" onclick="setLg('bn')">বাংলা</button><button class="${LG=='en'?'on':''}" onclick="setLg('en')">English</button></div></div><div class="cd"><div class="sw"><b>🌙 ${t('dark')}</b><button class="tg ${dk?'on':''}" onclick="setTh()"></button></div></div><div class="cd"><b>${t('acc')}</b><div style="margin-top:10px">${a}</div></div>`;
+}
+function setLg(x){LG=x;try{localStorage.setItem('bk_lg',x)}catch(e){}render()}
+function setTh(){TH=dark()?'light':'dark';try{localStorage.setItem('bk_th',TH)}catch(e){}render()}
+function detail(){
+  const p=D.people.find(x=>x.id==cur);if(!p){cur=null;return main()}
+  const b=bal(p),i=p.id;
+  let h=`<div class="tp"><button class="bt bo" onclick="cur=null;fm=null;cf=null;ed=false;render()">${t('back')}</button><div class="rw">${ed?`<button class="bt bo" style="${cf=='p'?'background:#dc2626;color:#fff;border-color:#dc2626':''}" onclick="delP('${i}')">${cf=='p'?t('ydel'):t('del')}</button>`:''}<button class="bt bo" style="opacity:.7" onclick="ed=!ed;cf=null;render()">${ed?t('end'):'⋯'}</button></div></div>
+  <div class="cd" style="text-align:center"><div class="av" style="margin:0 auto 8px;width:84px;height:84px;font-size:32px">${avc(p)}</div><b style="font-size:19px">${esc(p.name)}</b><br>${p.phone?`<a class="lk" href="tel:${esc(p.phone.replace(/[^0-9+]/g,''))}">📞 ${esc(p.phone)}</a> `:''}<a href="#" class="lk" style="color:var(--mu)" onclick="fm='edit';tp=undefined;render();return false">${t('edit')}</a>
+  <div class="big ${b>0?'cr':b<0?'cg':''}">${fmt(b)}</div><small>${b>0?t('d1'):b<0?t('d2'):t('clr2')}</small><br><button class="bt" style="margin-top:12px" onclick="showRc('${i}')">🧾 ${t('rcp')}</button></div>
+  <div class="rw" style="margin-top:12px"><button class="bt" style="background:#c0262b" onclick="fm='gave';render()">${t('gave')}</button><button class="bt" style="background:#15803d" onclick="fm='got';render()">${t('got')}</button></div>`;
+  if(fm=='edit')h+=`<div class="cd"><div style="display:flex;align-items:center;gap:12px"><div class="av" id="pv">${avc(p)}</div><button class="bt bo" onclick="pick(d=>{tp=d;$('#pv').innerHTML='<img src='+d+'>'})">📷 ${t('cph')}</button></div><input id="en" placeholder="${t('nm')}" value="${esc(p.name)}"><input id="ph2" type="tel" inputmode="tel" placeholder="${t('ph')}" value="${esc(p.phone||'')}"><div class="rw"><button class="bt bo" onclick="fm=null;render()">${t('cn')}</button><button class="bt" onclick="setP('${i}')">${t('sv')}</button></div></div>`;
+  if(fm=='gave'||fm=='got')h+=`<div class="cd"><b>${t(fm)}</b><input id="am" type="number" inputmode="decimal" placeholder="${t('am')}"><input id="nt" placeholder="${t('nt')}"><div class="rw"><button class="bt bo" onclick="fm=null;render()">${t('cn')}</button><button class="bt" onclick="addTx('${i}')">${t('sv')}</button></div></div>`;
+  return h+`<div class="cd">${p.tx.length?[...p.tx].reverse().map(x=>txr(x,'',ed?i:null)).join(''):`<div class="em">${t('notx')}</div>`}</div>`;
+}
+function openP(i){cur=i;fm=null;ed=false;cf=null;render();window.scrollTo(0,0)}
+function addPerson(){const n=$('#nm').value.trim();if(!n)return;D.people.push({id:uid(),name:n,phone:$('#ph').value.trim(),tx:[]});fm=null;save()}
+function setP(i){const p=D.people.find(x=>x.id==i),n=$('#en').value.trim();if(n)p.name=n;p.phone=$('#ph2').value.trim();if(tp!==undefined)p.photo=tp;fm=null;save()}
+function addTx(i){const a=parseFloat($('#am').value);if(!(a>0))return;D.people.find(x=>x.id==i).tx.push({id:uid(),type:fm,amt:a,note:$('#nt').value.trim(),date:new Date().toLocaleDateString('bn-BD'),d:td()});fm=null;save()}
+function delT(pi,ti){if(cf!='t'+ti){cf='t'+ti;render();return}cf=null;const p=D.people.find(x=>x.id==pi);p.tx=p.tx.filter(x=>x.id!=ti);save()}
+function delP(i){if(cf!='p'){cf='p';render();return}cf=null;D.people=D.people.filter(x=>x.id!=i);cur=null;ed=false;save()}
+const ldImg=u=>new Promise(ok=>{if(!u)return ok(null);const m=new Image();m.onload=()=>ok(m);m.onerror=()=>ok(null);m.src=u});
+async function showRc(i){
+  const p=D.people.find(x=>x.id==i),b=bal(p),rows=p.tx.slice(-20).reverse(),n=rows.length,S=2,W=720,H=744+n*64,F='"Noto Sans Bengali",system-ui,sans-serif',acc=D.profile.name||t('app');
+  let gv=0,gr=0;p.tx.forEach(r=>r.type=='gave'?gv+=r.amt:gr+=r.amt);
+  const [i1,i2]=await Promise.all([ldImg(D.profile.photo),ldImg(p.photo)]);
+  const c=document.createElement('canvas');c.width=W*S;c.height=H*S;const x=c.getContext('2d');x.scale(S,S);
+  const rr=(a,b2,w,h,r)=>{x.beginPath();x.roundRect?x.roundRect(a,b2,w,h,r):x.rect(a,b2,w,h)};
+  const circ=(im,cx,cy,r,ch,bg,fg)=>{x.save();x.beginPath();x.arc(cx,cy,r,0,7);x.clip();if(im)x.drawImage(im,cx-r,cy-r,2*r,2*r);else{x.fillStyle=bg;x.fillRect(cx-r,cy-r,2*r,2*r);x.fillStyle=fg;x.font='bold '+r+'px '+F;x.textAlign='center';x.textBaseline='middle';x.fillText(ch,cx,cy+2)}x.restore();x.textAlign='left';x.textBaseline='alphabetic'};
+  x.fillStyle='#fff';x.fillRect(0,0,W,H);
+  const g=x.createLinearGradient(0,0,W,150);g.addColorStop(0,'#7a1717');g.addColorStop(1,'#b83232');x.fillStyle=g;x.fillRect(0,0,W,150);
+  x.fillStyle='#fff';x.beginPath();x.arc(84,75,48,0,7);x.fill();circ(i1,84,75,44,'৳','#fff','#8b1f1f');
+  x.fillStyle='#fff';x.font='bold 34px '+F;x.fillText(acc,150,70,370);x.font='22px '+F;x.globalAlpha=.85;x.fillText(t('rct'),150,106);x.globalAlpha=1;
+  x.textAlign='right';x.font='20px '+F;x.fillText(t('rno')+': RC-'+td().replace(/-/g,'').slice(2)+p.id.slice(-2).toUpperCase(),W-36,64);x.fillText(new Date().toLocaleDateString(LG=='bn'?'bn-BD':'en-GB',{day:'numeric',month:'short',year:'numeric'}),W-36,98);x.textAlign='left';
+  rr(36,172,W-72,112,18);x.fillStyle='#faf3f2';x.fill();
+  circ(i2,100,228,44,[...p.name][0],'#fde2e1','#8b1f1f');
+  x.fillStyle='#111';x.font='bold 32px '+F;x.fillText(p.name,160,224,500);x.fillStyle='#666';x.font='22px '+F;if(p.phone)x.fillText('📞 '+p.phone,160,260);
+  rr(36,306,W-72,44,10);x.fillStyle='#8b1f1f';x.fill();x.fillStyle='#fff';x.font='bold 20px '+F;x.fillText(t('dt'),56,335);x.textAlign='right';x.fillText(t('amtL'),W-56,335);x.textAlign='left';
+  rows.forEach((r,k)=>{const y=358+k*64,gv2=r.type=='gave';if(k%2==0){x.fillStyle='#fbf6f5';x.fillRect(36,y,W-72,64)}
+    x.fillStyle='#222';x.font='22px '+F;x.fillText(fd(r),56,y+28);if(r.note){x.fillStyle='#999';x.font='18px '+F;x.fillText(r.note.slice(0,24),56,y+52)}
+    rr(330,y+15,100,34,17);x.fillStyle=gv2?'#c0262b':'#15803d';x.fill();x.fillStyle='#fff';x.font='bold 20px '+F;x.textAlign='center';x.fillText(t(r.type),380,y+39);
+    x.textAlign='right';x.fillStyle=gv2?'#c0262b':'#15803d';x.font='bold 26px '+F;x.fillText((gv2?'+':'−')+fmt(r.amt),W-56,y+40);x.textAlign='left'});
+  let y=358+n*64+10;x.strokeStyle='#ccc';x.setLineDash([6,6]);x.beginPath();x.moveTo(36,y);x.lineTo(W-36,y);x.stroke();x.setLineDash([]);
+  y+=42;x.fillStyle='#555';x.font='22px '+F;x.fillText(t('tgv'),56,y);x.textAlign='right';x.fillStyle='#c0262b';x.font='bold 24px '+F;x.fillText(fmt(gv),W-56,y);x.textAlign='left';
+  y+=44;x.fillStyle='#555';x.font='22px '+F;x.fillText(t('tgr'),56,y);x.textAlign='right';x.fillStyle='#15803d';x.font='bold 24px '+F;x.fillText(fmt(gr),W-56,y);x.textAlign='left';
+  y+=30;rr(36,y,W-72,110,18);x.fillStyle=b>0?'#fde2e1':b<0?'#dcf7e3':'#eee';x.fill();x.strokeStyle=b>0?'#c0262b':b<0?'#15803d':'#999';x.lineWidth=2;x.stroke();
+  const cl=b>0?'#c0262b':b<0?'#15803d':'#333';x.fillStyle='#444';x.font='22px '+F;x.fillText(b>0?t('r1'):b<0?t('r2'):t('clr2'),60,y+64);x.textAlign='right';x.fillStyle=cl;x.font='bold 44px '+F;x.fillText(fmt(b),W-60,y+72);
+  y+=160;x.textAlign='center';x.fillStyle='#8b1f1f';x.font='bold 24px '+F;x.fillText(t('thx'),W/2,y);x.fillStyle='#999';x.font='20px '+F;x.fillText(acc,W/2,y+34);
+  rc={url:c.toDataURL('image/png'),name:'receipt-'+p.name};render();
+}
+function dlRc(){const a=document.createElement('a');a.href=rc.url;a.download=rc.name+'.png';document.body.appendChild(a);a.click();a.remove()}
+async function shRc(){try{const bl=await(await fetch(rc.url)).blob(),f=new File([bl],rc.name+'.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f]});else dlRc()}catch(e){}}
+function login(){firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>alert(e.message))}
+function doOut(){if(cf!='out'){cf='out';render();return}cf=null;if(unsub){unsub();unsub=null}firebase.auth().signOut();D={people:[],profile:{}};try{localStorage.removeItem('baki')}catch(e){}render()}
+const ld=s=>new Promise((ok,no)=>{const e=document.createElement('script');e.src=s;e.onload=ok;e.onerror=no;document.head.appendChild(e)});
+async function initFb(){
+  if(!FIREBASE_CONFIG)return;
+  try{
+    const b='https://cdn.jsdelivr.net/npm/firebase@10.12.2/';
+    await ld(b+'firebase-app-compat.js');await Promise.all([ld(b+'firebase-auth-compat.js'),ld(b+'firebase-firestore-compat.js')]);
+    firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();db.enablePersistence().catch(()=>{});
+    firebase.auth().onAuthStateChanged(u=>{user=u;
+      if(u){sy='cloud';const r=db.collection('users').doc(u.uid);
+        unsub=r.onSnapshot(s=>{if(s.exists){D=s.data();fix()}else if(D.people.length)r.set(D);try{localStorage.setItem('baki',JSON.stringify(D))}catch(e){}sy='cloud';render()},()=>{sy='err';render()})}
+      else{sy='local';render()}});
+  }catch(e){sy='err';render()}
+}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+loadLocal();render();initFb();
+</script></body></html>
